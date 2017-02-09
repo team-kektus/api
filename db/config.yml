@@ -1,0 +1,5 @@
+development:
+  adapter: postgresql
+  username: kektus
+  password: kektus
+  database: kektus_development

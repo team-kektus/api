@@ -2,11 +2,16 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in api.gemspec
 
+gem 'active_record_migrations', "~> 5.0.1.1"
+gem 'pg', "~> 0.19.0"
+gem 'database_cleaner', "~> 1.5.3"
+
 gem 'grape', "~> 0.19.1"
 gem 'grape-entity', "~> 0.6.1"
 
-gem 'actionpack', "~> 5.0.1"
+gem 'actionpack', "~> 5.0.1", :require => ['action_controller']
 gem 'activesupport', "~> 5.0.1"
+gem 'activerecord', "~> 5.0.1"
 
 gem 'puma', "~> 3.7.0", require: false
 
