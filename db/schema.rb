@@ -10,15 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209091831) do
+ActiveRecord::Schema.define(version: 20170214170734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "teams", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
+    t.string  "username", null: false
+    t.integer "team_id"
+    t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
 end
