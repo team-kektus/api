@@ -13,7 +13,7 @@ gem 'actionpack', "~> 5.0.1", :require => ['action_controller']
 gem 'activesupport', "~> 5.0.1"
 gem 'activerecord', "~> 5.0.1"
 
-gem 'puma', "~> 3.7.0", require: false
+gem 'puma', "~> 3.7", require: false
 
 
 group :development do
@@ -21,6 +21,7 @@ group :development do
   gem 'rake', "~> 10.0"
   gem 'rspec', "~> 3.0"
   gem 'foreman', "~> 0.83.0"
+  gem "capistrano", "~> 3.7"
 end
 
 
