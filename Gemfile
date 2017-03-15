@@ -8,7 +8,7 @@ gem 'database_cleaner', "~> 1.5.3"
 
 gem 'grape', "~> 0.19.1"
 gem 'grape-entity', "~> 0.6.1"
-gem 'devise', path: '../devise'
+gem 'devise', "~> 4.2.0"
 
 gem 'actionpack', "~> 5.0.1", :require => ['action_controller']
 gem 'activesupport', "~> 5.0.1"
