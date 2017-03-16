@@ -9,8 +9,6 @@ module V1
 
     helpers V1::Helpers
 
-
-
     mount V1::Endpoints::Auth
     mount V1::Endpoints::Account
     mount V1::Endpoints::Users
