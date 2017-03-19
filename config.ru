@@ -5,9 +5,9 @@ require "bundler/setup"
 
 Bundler.require :default
 
-require File.expand_path('../config/initializers/devise', __FILE__)
-
 require "api"
+
+require File.expand_path('../config/config', __FILE__)
 
 db_config = YAML.load_file(File.dirname(__FILE__) + '/db/config.yml')['development']
 ActiveRecord::Base.establish_connection(db_config)
@@ -19,13 +19,19 @@ ActiveRecord::Base.logger = Logger.new STDOUT
 use Rack::Session::Cookie, secret: 'very secreto key'
 
 
-use Warden::Manager do |warden|
-  Devise.setup do |config|
-    config.warden_config = warden
-    config.pepper = 'pepper'
+use Warden::Manager do |manager|
+  manager.failure_app = V1::Auth::FailureApp.new
+  manager.default_strategies :password
+
+  manager.serialize_into_session do |user|
+    user.id
   end
 
-  warden.failure_app = V1::FailureApp.new
+  manager.serialize_from_session do |id|
+    Models::User.find(id)
+  end
 end
+
+Warden::Strategies.add(:password, V1::Auth::PasswordStrategy)
 
 run Root

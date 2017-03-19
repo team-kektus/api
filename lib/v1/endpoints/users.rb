@@ -9,11 +9,15 @@ module V1
 
         desc 'Create new user.'
         params do
-          requires :email, type: String, desc: "Username"
+          requires :full_name, type: String, desc: "Full name"
+          requires :email, type: String, desc: "Email"
           requires :password, type: String, desc: "Password"
+          optional :avatar, type: Rack::Multipart::UploadedFile, desc: "Profile picture"
         end
         post do
-          user = Models::User.create!(allowed_params(params))
+          permitted_params = allowed_params(params)
+          permitted_params[:avatar] = ActionDispatch::Http::UploadedFile.new(params[:avatar]) if params[:avatar]
+          user = Models::User.create!(permitted_params)
           present user, with: Entities::User
         end
       end
@@ -24,6 +28,8 @@ module V1
           ActionController::Parameters.new(params).permit(
             :email,
             :password,
+            :full_name,
+            :avatar => [:filename, :tempfile]
           )
         end
       end

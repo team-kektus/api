@@ -9,6 +9,14 @@ module V1
       !!current_user
     end
 
+    def user_is_admin?
+      current_user.is_admin
+    end
+
+    def user_is_professor?
+      current_user.is_professor
+    end
+
     def current_user
       @current_user ||= warden.authenticate(scope: :user)
     end
@@ -20,7 +28,7 @@ module V1
     def warden
       request.env['warden']
     end
-
+    
     def session
       request.env['rack.session']
     end

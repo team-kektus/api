@@ -1,33 +1,30 @@
 module Models
   class User < ActiveRecord::Base
-    attr_accessor :login
+    include BCrypt
+    include Paperclip::Glue
 
-    # Include default devise modules. Others available are:
-    # :encryptable, :timeoutable and :omniauthable
-    devise :database_authenticatable, #:registerable,
-          #  :recoverable, :rememberable, :trackable, :validatable,
-          #  :lockable, 
-           :authentication_keys => {email: true, login: false}
+    has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>"}, default_url: "/images/:style/missing_avatar.png", path: '../static/:attachment/:id/:style/:filename'
+    validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+    validates_attachment_file_name :avatar, matches: [/png\z/, /jpe?g\z/]
+    do_not_validate_attachment_file_type :avatar
 
-    # Setup accessible (or protected) attributes for your model
-    # attr_accessible :email, :password, :password_confirmation, :remember_me
+    validates :email, :presence => true
 
 
-    def self.find_for_database_authentication(warden_conditions)
-      conditions = warden_conditions.dup
-      if login = conditions.delete(:login)
-        where(conditions.to_h).where(["lower(email) = :value", { :value => login.downcase }]).first
-      elsif conditions.has_key?(:email)
-        where(conditions.to_h).first
-      end
+    def password=(new_password)
+      @password = new_password
+      self.encrypted_password = password_digest(@password) if @password.present?
     end
 
-    validate :validate_username
+    # Verifies whether a password (ie from sign in) is the user password.
+    def valid_password?(password)
+      V1::Auth::Encryptor.compare(encrypted_password, password)
+    end
 
-    def validate_username
-      if User.where(email: email).exists?
-        errors.add(:email, :invalid)
-      end
+  protected
+
+    def password_digest(password)
+      V1::Auth::Encryptor.digest(password)
     end
 
   end

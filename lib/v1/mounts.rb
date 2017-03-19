@@ -4,7 +4,6 @@ module V1
     format :json
     content_type :json, 'application/json;charset=UTF-8'
 
-
     rescue_from :all, backtrace: true
 
     helpers V1::Helpers

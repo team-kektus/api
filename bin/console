@@ -23,7 +23,7 @@ Bundler.require :default
 
 require "api"
 
-require File.expand_path('../../config/initializers/devise', __FILE__)
+require File.expand_path('../../config/config', __FILE__)
 
 db_config = YAML.load_file(File.dirname(__FILE__) + '/../db/config.yml')['development']
 ActiveRecord::Base.establish_connection(db_config)
