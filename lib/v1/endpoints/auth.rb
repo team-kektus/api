@@ -23,6 +23,7 @@ module V1
 
         get 'logout' do
           warden.logout(:user)
+          present 'true'
         end
       end
 

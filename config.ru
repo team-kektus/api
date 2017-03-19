@@ -14,9 +14,8 @@ ActiveRecord::Base.establish_connection(db_config)
 
 ActiveRecord::Base.logger = Logger.new STDOUT
 
-# use ActionDispatch::Cookies
-# use ActionDispatch::Session::CookieStore, key: '_kektus'
-use Rack::Session::Cookie, secret: 'very secreto key'
+
+use Rack::Session::Cookie, secret: Config.secret_key
 
 
 use Warden::Manager do |manager|

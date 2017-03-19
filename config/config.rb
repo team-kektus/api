@@ -4,4 +4,7 @@ module Config
 
   mattr_accessor :stretches
   @@stretches = 11
+
+  mattr_accessor :secret_key
+  @@secret_key = 'very secreto key'
 end

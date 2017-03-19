@@ -3,7 +3,12 @@ module Models
     include BCrypt
     include Paperclip::Glue
 
-    has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>"}, default_url: "/images/:style/missing_avatar.png", path: '../static/:attachment/:id/:style/:filename'
+    has_attached_file :avatar,
+                      styles: { medium: "300x300>", thumb: "100x100>"},
+                      url: '/static/:attachment/:id/:style/:filename',
+                      default_url: "/static/images/:style/missing_avatar.png",
+                      path: '../staticfiles/static/:attachment/:id/:style/:filename'
+
     validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
     validates_attachment_file_name :avatar, matches: [/png\z/, /jpe?g\z/]
     do_not_validate_attachment_file_type :avatar
