@@ -20,6 +20,7 @@ module V1
           user = Models::User.create!(permitted_params)
           present user, with: Entities::User
         end
+
       end
 
 
