@@ -7,6 +7,9 @@ module V1
       expose :is_admin
       expose :is_professor
       expose :avatar
+      expose :speciality
+      expose :address
+      expose :county
     end
   end
 end
