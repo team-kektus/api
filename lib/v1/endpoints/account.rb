@@ -9,13 +9,9 @@ module V1
         end
 
         desc 'Change user data.'
-        params do
-          requires :email, type: String, desc: "Email"
-        end
         put do
-          permitted_params = allowed_params(params)
-          user = Models::User.find_by(email: permitted_params.delete(:email))
-          user.update_attributes(permitted_params)
+          user = Models::User.find_by(email: current_user.email)
+          user.update_attributes(allowed_params(params))
           user.save!
         end
 
@@ -24,9 +20,11 @@ module V1
       helpers do
         def allowed_params(params)
           ActionController::Parameters.new(params).permit(
-            :email,
             :password,
             :full_name,
+            :address,
+            :speciality,
+            :county,
             :avatar => [:filename, :tempfile]
           )
         end
