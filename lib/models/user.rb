@@ -3,6 +3,11 @@ module Models
     include BCrypt
     include Paperclip::Glue
 
+    belongs_to :team
+
+    validates :email, :presence => true
+
+
     has_attached_file :avatar,
                       styles: { medium: "300x300>", thumb: "100x100>"},
                       url: '/static/:attachment/:id/:style/:filename',
@@ -12,8 +17,6 @@ module Models
     validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
     validates_attachment_file_name :avatar, matches: [/png\z/, /jpe?g\z/]
     do_not_validate_attachment_file_type :avatar
-
-    validates :email, :presence => true
 
 
     def password=(new_password)
