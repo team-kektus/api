@@ -27,6 +27,7 @@ group :development do
   gem 'foreman', "~> 0.83.0"
   gem 'capistrano', "~> 3.7"
   gem 'capistrano-bundler'
+  gem 'capistrano-rbenv'
   gem 'capistrano3-puma'
 end
 
