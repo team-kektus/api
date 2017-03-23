@@ -38,7 +38,7 @@ set :pty, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-
+set :user,            'kektus'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
