@@ -1,7 +1,7 @@
 # config valid only for current version of Capistrano
 lock "3.7.2"
 
-set :application, "Kektus_API"
+set :application, "api"
 set :repo_url, "git@github.com:team-kektus/api.git"
 
 # Default branch is :master
@@ -36,7 +36,7 @@ set :pty, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :rbenv_type, :system # or :system, depends on your rbenv setup
+set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, '2.2.6'
 # set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby}
