@@ -40,7 +40,7 @@ set :pty, true
 
 set :user,            'kektus'
 set :puma_threads,    [4, 16]
-set :puma_workers,    0
+set :puma_workers,    1
 
 
 
