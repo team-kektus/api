@@ -38,6 +38,12 @@ set :pty, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.2.6'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
+
 set :user,            'kektus'
 set :puma_threads,    [4, 16]
 set :puma_workers,    1
