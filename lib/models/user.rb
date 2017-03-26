@@ -12,7 +12,7 @@ module Models
                       styles: { medium: "300x300>", thumb: "100x100>"},
                       url: '/static/:attachment/:id/:style/:filename',
                       default_url: "/static/images/:style/missing_avatar.png",
-                      path: '../staticfiles/static/:attachment/:id/:style/:filename'
+                      path: "#{Config.staticfiles_path}/:attachment/:id/:style/:filename"
 
     validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
     validates_attachment_file_name :avatar, matches: [/png\z/, /jpe?g\z/]

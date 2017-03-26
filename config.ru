@@ -9,7 +9,7 @@ require "api"
 
 require File.expand_path('../config/config', __FILE__)
 
-db_config = YAML.load_file(File.dirname(__FILE__) + '/db/config.yml')['development']
+db_config = YAML.load_file(File.dirname(__FILE__) + '/db/config.yml')[ENV['RACK_ENV']]
 ActiveRecord::Base.establish_connection(db_config)
 
 ActiveRecord::Base.logger = Logger.new STDOUT

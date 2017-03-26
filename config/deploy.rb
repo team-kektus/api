@@ -10,8 +10,6 @@ set :repo_url, "git@github.com:team-kektus/api.git"
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
 
-set :deploy_to, "/home/kektus/api"
-
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
@@ -38,9 +36,15 @@ set :pty, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.2.6'
+# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby}
+set :rbenv_roles, :all # default value
+
 set :user,            'kektus'
 set :puma_threads,    [4, 16]
-set :puma_workers,    0
+set :puma_workers,    1
 
 
 
@@ -68,6 +72,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 ## Linked Files & Directories (Default None):
 # set :linked_files, %w{config/database.yml}
 # set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs,  %w{tmp/pids tmp/cache tmp/sockets}
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
