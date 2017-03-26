@@ -10,8 +10,10 @@ module V1
 
         desc 'Change user data.'
         put do
+          permitted_params = allowed_params(params)
+          permitted_params[:avatar] = ActionDispatch::Http::UploadedFile.new(params[:avatar]) if params[:avatar]
           user = Models::User.find_by(email: current_user.email)
-          user.update_attributes(allowed_params(params))
+          user.update_attributes(permitted_params)
           user.save!
         end
 
