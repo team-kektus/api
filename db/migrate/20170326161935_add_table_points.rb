@@ -1,6 +1,6 @@
 class AddTablePoints < ActiveRecord::Migration[5.0]
   def change
-    create_table(:grades) do |t|
+    create_table(:points) do |t|
 
       t.string :deadline,
       t.string :presentation_date,
@@ -10,6 +10,7 @@ class AddTablePoints < ActiveRecord::Migration[5.0]
 
     end
 
-      add_reference :grades, :teams, :index => true, foreign_key: true
+      add_reference :points, :teams, :index => true, foreign_key: true
+      add_reference :points, :grading_aspects, :index => true, foreign_key: true
   end
 end

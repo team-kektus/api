@@ -1,5 +1,5 @@
 module Models
   class GradingAspects < ActiveRecord::Base
-    belongs_to :Grade
+    has_many :points
   end
 end
