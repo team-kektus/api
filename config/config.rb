@@ -9,5 +9,5 @@ module Config
   @@secret_key = 'very secreto key'
 
   mattr_accessor :staticfiles_path
-  @@staticfiles_path = '../staticfiles'
+  @@staticfiles_path = '../staticfiles/static'
 end
