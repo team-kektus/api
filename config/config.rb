@@ -1,13 +1,13 @@
 module Config
   mattr_accessor :pepper
-  @@pepper = 'salt'
+  @@pepper = ENV["PEPPER"]
 
   mattr_accessor :stretches
-  @@stretches = 1
+  @@stretches = ENV["STRETCHES"]
 
   mattr_accessor :secret_key
-  @@secret_key = 'very secreto key'
+  @@secret_key = ENV["SECRET_KEY"]
 
   mattr_accessor :staticfiles_path
-  @@staticfiles_path = '../staticfiles/static'
+  @@staticfiles_path = ENV["STATICFILES_PATH"]
 end

@@ -9,10 +9,9 @@ require "api"
 
 require File.expand_path('../config/config', __FILE__)
 
-db_config = YAML.load_file(File.dirname(__FILE__) + '/db/config.yml')[ENV['RACK_ENV']]
-ActiveRecord::Base.establish_connection(db_config)
+ActiveRecord::Base.establish_connection(ENV["DATABASE_URL"])
 
-ActiveRecord::Base.logger = Logger.new STDOUT
+ActiveRecord::Base.logger = Logger.new STDOUT if ENV["RACK_ENV"] == "development"
 
 
 use Rack::Session::Cookie, secret: Config.secret_key
