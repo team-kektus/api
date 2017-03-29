@@ -3,7 +3,7 @@ module Config
   @@pepper = ENV["PEPPER"]
 
   mattr_accessor :stretches
-  @@stretches = ENV["STRETCHES"]
+  @@stretches = ENV["STRETCHES"].to_i
 
   mattr_accessor :secret_key
   @@secret_key = ENV["SECRET_KEY"]
