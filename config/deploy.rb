@@ -73,6 +73,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 # set :linked_files, %w{config/database.yml}
 # set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 set :linked_dirs,  %w{tmp/pids tmp/cache tmp/sockets}
+set :linked_files, %w{.rbenv-vars}
 
 # namespace :puma do
 #   desc 'Create Directories for Puma Pids and Socket'
