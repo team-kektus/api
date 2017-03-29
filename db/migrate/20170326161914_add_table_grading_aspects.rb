@@ -8,7 +8,7 @@ class AddTableGradingAspects < ActiveRecord::Migration[5.0]
       t.string :max_points,
       t.boolean :is_aspect, :null => false
       t.string :url
-
+  
     end
   end
 end
