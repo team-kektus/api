@@ -10,10 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322101301) do
+ActiveRecord::Schema.define(version: 20170326161935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "grading_aspects", force: :cascade do |t|
+    t.string  "number",     default: ""
+    t.string  "name",       default: ""
+    t.string  "deadline",   default: ""
+    t.string  "max_points", default: ""
+    t.string  "url",        default: ""
+    t.boolean "is_aspect",               null: false
+  end
+
+  create_table "points", force: :cascade do |t|
+    t.string   "deadline",           default: ""
+    t.string   "presentation_date",  default: ""
+    t.string   "points",             default: ""
+    t.string   "stage1_points",      default: ""
+    t.string   "stage2_points",      default: ""
+    t.string   "stage3_points",      default: ""
+    t.string   "stage4_points",      default: ""
+    t.string   "stage5_points",      default: ""
+    t.string   "stage6_points",      default: ""
+    t.string   "stage7_points",      default: ""
+    t.string   "stage8_points",      default: ""
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "teams_id"
+    t.integer  "grading_aspects_id"
+    t.index ["grading_aspects_id"], name: "index_points_on_grading_aspects_id", using: :btree
+    t.index ["teams_id"], name: "index_points_on_teams_id", using: :btree
+  end
 
   create_table "teams", force: :cascade do |t|
     t.string "name",                        null: false
@@ -42,5 +71,7 @@ ActiveRecord::Schema.define(version: 20170322101301) do
     t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
+  add_foreign_key "points", "grading_aspects", column: "grading_aspects_id"
+  add_foreign_key "points", "teams", column: "teams_id"
   add_foreign_key "users", "teams"
 end
