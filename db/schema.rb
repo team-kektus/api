@@ -16,32 +16,24 @@ ActiveRecord::Schema.define(version: 20170326161935) do
   enable_extension "plpgsql"
 
   create_table "grading_aspects", force: :cascade do |t|
-    t.string  "number",     default: ""
-    t.string  "name",       default: ""
-    t.string  "deadline",   default: ""
-    t.string  "max_points", default: ""
-    t.string  "url",        default: ""
-    t.boolean "is_aspect",               null: false
+    t.string  "number",                      null: false
+    t.string  "name",                        null: false
+    t.integer "deadline"
+    t.integer "max_points",  default: 0,     null: false
+    t.string  "url",         default: ""
+    t.boolean "is_multiple", default: false, null: false
+    t.index ["number"], name: "index_grading_aspects_on_number", unique: true, using: :btree
   end
 
   create_table "points", force: :cascade do |t|
-    t.string   "deadline",           default: ""
-    t.string   "presentation_date",  default: ""
-    t.string   "points",             default: ""
-    t.string   "stage1_points",      default: ""
-    t.string   "stage2_points",      default: ""
-    t.string   "stage3_points",      default: ""
-    t.string   "stage4_points",      default: ""
-    t.string   "stage5_points",      default: ""
-    t.string   "stage6_points",      default: ""
-    t.string   "stage7_points",      default: ""
-    t.string   "stage8_points",      default: ""
+    t.integer  "presentation_date",               null: false
+    t.float    "points",            default: 0.0, null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "teams_id"
-    t.integer  "grading_aspects_id"
-    t.index ["grading_aspects_id"], name: "index_points_on_grading_aspects_id", using: :btree
-    t.index ["teams_id"], name: "index_points_on_teams_id", using: :btree
+    t.integer  "team_id"
+    t.integer  "grading_aspect_id"
+    t.index ["grading_aspect_id"], name: "index_points_on_grading_aspect_id", using: :btree
+    t.index ["team_id"], name: "index_points_on_team_id", using: :btree
   end
 
   create_table "teams", force: :cascade do |t|
@@ -71,7 +63,7 @@ ActiveRecord::Schema.define(version: 20170326161935) do
     t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
-  add_foreign_key "points", "grading_aspects", column: "grading_aspects_id"
-  add_foreign_key "points", "teams", column: "teams_id"
+  add_foreign_key "points", "grading_aspects"
+  add_foreign_key "points", "teams"
   add_foreign_key "users", "teams"
 end

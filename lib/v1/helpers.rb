@@ -5,6 +5,14 @@ module V1
       warden.authenticate!(opts)
     end
 
+    def ensure_admin!
+      throw(:warden, :action => "permission_denied") unless user_is_admin?
+    end
+
+    def ensure_professor!
+      throw(:warden, :action => "permission_denied") unless user_is_professor?
+    end
+
     def user_signed_in?
       !!current_user
     end
@@ -18,7 +26,7 @@ module V1
     end
 
     def current_user
-      @current_user ||= warden.authenticate(scope: :user)
+      @current_user ||= warden.authenticate!(scope: :user)
     end
 
     def user_session
@@ -28,7 +36,7 @@ module V1
     def warden
       request.env['warden']
     end
-    
+
     def session
       request.env['rack.session']
     end

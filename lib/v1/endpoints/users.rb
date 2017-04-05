@@ -21,6 +21,23 @@ module V1
           present user, with: Entities::User
         end
 
+        route_param :user_id do
+          get do
+            present Models::User.find(params[:user_id]), with: Entities::User
+          end
+
+          before &:ensure_professor!
+          params do
+            optional :team_id, type: String
+          end
+          put do
+            user = Models::User.find(params[:user_id])
+            user.update_attributes(permit_professor_params(params))
+            user.save
+            present user, with: Entities::User
+          end
+        end
+
       end
 
 
@@ -31,6 +48,12 @@ module V1
             :password,
             :full_name,
             :avatar => [:filename, :tempfile]
+          )
+        end
+
+        def permit_professor_params(params)
+          ActionController::Parameters.new(params).permit(
+            :team_id
           )
         end
       end

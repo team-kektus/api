@@ -5,7 +5,7 @@ module V1
       expose :name
       expose :deadline
       expose :max_points
-      expose :is_aspect
+      expose :is_multiple
       expose :url
     end
   end

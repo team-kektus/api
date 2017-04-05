@@ -1,5 +1,5 @@
 module Models
-  class GradingAspects < ActiveRecord::Base
+  class GradingAspect < ActiveRecord::Base
     has_many :points
   end
 end
