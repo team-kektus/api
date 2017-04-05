@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322101301) do
+ActiveRecord::Schema.define(version: 20170326161935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "grading_aspects", force: :cascade do |t|
+    t.string  "number",                      null: false
+    t.string  "name",                        null: false
+    t.integer "deadline"
+    t.integer "max_points",  default: 0,     null: false
+    t.string  "url",         default: ""
+    t.boolean "is_multiple", default: false, null: false
+    t.index ["number"], name: "index_grading_aspects_on_number", unique: true, using: :btree
+  end
+
+  create_table "points", force: :cascade do |t|
+    t.integer  "presentation_date",               null: false
+    t.float    "points",            default: 0.0, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "team_id"
+    t.integer  "grading_aspect_id"
+    t.index ["grading_aspect_id"], name: "index_points_on_grading_aspect_id", using: :btree
+    t.index ["team_id"], name: "index_points_on_team_id", using: :btree
+  end
 
   create_table "teams", force: :cascade do |t|
     t.string "name",                        null: false
@@ -42,5 +63,7 @@ ActiveRecord::Schema.define(version: 20170322101301) do
     t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
+  add_foreign_key "points", "grading_aspects"
+  add_foreign_key "points", "teams"
   add_foreign_key "users", "teams"
 end

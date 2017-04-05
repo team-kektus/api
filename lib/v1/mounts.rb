@@ -12,5 +12,6 @@ module V1
     mount V1::Endpoints::Account
     mount V1::Endpoints::Users
     mount V1::Endpoints::Teams
+    mount V1::Endpoints::GradingAspects
   end
 end
