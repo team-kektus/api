@@ -10,7 +10,7 @@ shared_dir = "#{app_dir}/shared"
 env = ENV['RACK_ENV'] || 'production'
 environment env
 
-daemonize false
+daemonize true
 
 # Set up socket location
 bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
