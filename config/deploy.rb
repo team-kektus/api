@@ -8,7 +8,7 @@ set :repo_url, "git@github.com:team-kektus/api.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, "/var/www/my_app_name"
+set :deploy_to, "/home/deploy/#{fetch(:application)}"
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -20,8 +20,6 @@ set :format, :pretty
 # set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
 
 # Default value for :pty is false
-# set :pty, true
-
 set :pty, true
 
 # Default value for :linked_files is []
@@ -36,56 +34,15 @@ set :pty, true
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.2.6'
-# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-# set :rbenv_map_bins, %w{rake gem bundle ruby}
-set :rbenv_roles, :all # default value
 
-set :user,            'kektus'
-set :puma_threads,    [4, 16]
-set :puma_workers,    1
+set :rbenv_type, :user
+set :rbenv_ruby, File.read('.ruby-version').strip
 
-
-
-# Don't change these unless you know what you're doing
-set :use_sudo,        false
-set :stage,           :development
-# set :deploy_via,      :remote_cache
-set :deploy_to,       "/home/#{fetch(:user)}/#{fetch(:application)}"
-set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
-set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
-set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
-set :puma_access_log, "#{release_path}/log/puma.error.log"
-set :puma_error_log,  "#{release_path}/log/puma.access.log"
-set :puma_preload_app, true
-set :puma_worker_timeout, nil
-set :puma_init_active_record, true  # Change to false when not using ActiveRecord
-
-## Defaults:
-# set :scm,           :git
-# set :branch,        :master
-# set :format,        :pretty
-# set :log_level,     :debug
-# set :keep_releases, 5
-
-## Linked Files & Directories (Default None):
-# set :linked_files, %w{config/database.yml}
-# set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs,  %w{tmp/pids tmp/cache tmp/sockets}
+set :linked_dirs, %w{tmp/sockets tmp/pids}
 set :linked_files, %w{.rbenv-vars}
 
-# namespace :puma do
-#   desc 'Create Directories for Puma Pids and Socket'
-#   task :make_dirs do
-#     on roles(:app) do
-#       execute "mkdir #{shared_path}/tmp/sockets -p"
-#       execute "mkdir #{shared_path}/tmp/pids -p"
-#     end
-#   end
-#
-#   before :start, :make_dirs
-# end
+set :puma_conf, "#{release_path}/config/puma.rb"
+
 
 namespace :deploy do
   desc "Make sure local git is in sync with remote."
@@ -99,18 +56,6 @@ namespace :deploy do
     end
   end
 
-  desc 'Initial Deploy'
-  task :initial do
-    on roles(:app) do
-      before 'deploy:restart', 'puma:start'
-      invoke 'deploy'
-    end
-  end
-
   before :starting,     :check_revision
-  after  :finishing,    :cleanup
-end
 
-# ps aux | grep puma    # Get puma pid
-# kill -s SIGUSR2 pid   # Restart puma
-# kill -s SIGTERM pid   # Stop puma
+end

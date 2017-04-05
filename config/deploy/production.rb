@@ -7,8 +7,6 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server '138.68.88.106', user: 'kektus', roles: %w{app}
-
 
 
 # role-based syntax
@@ -66,6 +64,5 @@ role :app, %w{kektus@138.68.88.106}
 
 
 set :ssh_options, {
-  forward_agent: true,
-  user: 'kektus',
+  forward_agent: true
 }
