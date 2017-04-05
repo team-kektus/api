@@ -17,6 +17,11 @@ ActiveRecord::Base.logger = Logger.new STDOUT if ENV["RACK_ENV"] == "development
 use Rack::Session::Cookie, secret: Config.secret_key
 
 
+use OmniAuth::Builder do
+  provider :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET']
+end
+
+
 use Warden::Manager do |manager|
   manager.failure_app = V1::Auth::FailureApp.new
   manager.default_strategies :password
@@ -31,5 +36,10 @@ use Warden::Manager do |manager|
 end
 
 Warden::Strategies.add(:password, V1::Auth::PasswordStrategy)
+
+
+use WardenOmniAuth do |config|
+
+end
 
 run Root

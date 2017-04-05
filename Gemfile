@@ -9,8 +9,11 @@ gem 'database_cleaner', "~> 1.5.3"
 gem 'grape', "~> 0.19.1"
 gem 'grape-entity', "~> 0.6.1"
 
-gem 'warden', "~> 1.2.7"
 gem 'bcrypt', "~> 3.1.11"
+gem 'warden', "~> 1.2.7"
+gem 'warden_omniauth', "~> 0.1.0"
+gem 'omniauth', "~> 1.6.1"
+gem 'omniauth-facebook', "~> 4.0.0"
 
 gem 'actionpack', "~> 5.0.1", :require => ['action_controller']
 gem 'activesupport', "~> 5.0.1"
