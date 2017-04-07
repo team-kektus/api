@@ -2,10 +2,6 @@ module V1
   module Endpoints
     class Users < Grape::API
       resource :users do
-        desc 'List all users.'
-        get do
-          present Models::User.all, with: Entities::User
-        end
 
         desc 'Create new user.'
         params do
@@ -21,22 +17,33 @@ module V1
           present user, with: Entities::User
         end
 
-        route_param :user_id do
+
+        namespace do
+          before &:authenticate!
+
+          desc 'List all users.'
           get do
-            present Models::User.find(params[:user_id]), with: Entities::User
+            present Models::User.all, with: Entities::User
           end
 
-          before &:ensure_professor!
-          params do
-            optional :team_id, type: String
-          end
-          put do
-            user = Models::User.find(params[:user_id])
-            user.update_attributes(permit_professor_params(params))
-            user.save
-            present user, with: Entities::User
+          route_param :user_id do
+            get do
+              present Models::User.find(params[:user_id]), with: Entities::User
+            end
+
+            before &:ensure_professor!
+            params do
+              optional :team_id, type: String
+            end
+            put do
+              user = Models::User.find(params[:user_id])
+              user.update_attributes(permit_professor_params(params))
+              user.save
+              present user, with: Entities::User
+            end
           end
         end
+
 
       end
 

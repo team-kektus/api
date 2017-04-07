@@ -15,8 +15,9 @@ module V1
           end
 
           namespace 'points' do
-            get do
+            get ':multiple' do
               query = Models::Point.all.by_team_id(params[:team_id])
+              query = query.multiple(params[:multiple]) if params[:multiple].present?
               present query, with: Entities::Point
             end
 
