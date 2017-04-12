@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 20170326161935) do
     t.float    "points",            default: 0.0, null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "team_id"
-    t.integer  "grading_aspect_id"
+    t.integer  "team_id",                         null: false
+    t.integer  "grading_aspect_id",               null: false
     t.index ["grading_aspect_id"], name: "index_points_on_grading_aspect_id", using: :btree
     t.index ["team_id"], name: "index_points_on_team_id", using: :btree
   end
