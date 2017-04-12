@@ -9,7 +9,7 @@ module V1
       expose :speciality
       expose :address
       expose :county
-      expose :team
+      expose :team, using: Entities::Team
     end
   end
 end

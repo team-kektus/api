@@ -3,7 +3,7 @@ module V1
     class Point < Grape::Entity
       expose :presentation_date
       expose :points
-      expose :grading_aspect
+      expose :grading_aspect, using: Entities::GradingAspect
     end
   end
 end
