@@ -26,8 +26,15 @@ class AddGradingAspectsData < ActiveRecord::Migration[5.0]
     {number: '3.3', name: 'Automaattestid', max_points: 6, deadline: 6, is_multiple: false},
     {number: '3.4', name: 'Jõudlustestid', max_points: 6, deadline: 6, is_multiple: false},
     {number: '3.5', name: 'Testkeskkond', max_points: 6, deadline: 2, is_multiple: false},
-    {number: '3.6', name: 'Projektiplaan', max_points: 6, deadline: 1, is_multiple: false}
-  ]
+    {number: '3.6', name: 'Projektiplaan', max_points: 6, deadline: 1, is_multiple: false},
+    {number: nil, name: 'HTML Kehtivus', max_points: 2, deadline: nil, is_multiple: true},
+    {number: nil, name: 'CSS Kehtivus', max_points: 2, deadline: nil, is_multiple: true},
+    {number: nil, name: 'Eraldatus', max_points: 2, deadline: nil, is_multiple: true},
+    {number: nil, name: 'WCAG', max_points: 2, deadline: nil, is_multiple: true},
+    {number: nil, name: 'Veebilehitsejate tugi', max_points: 1, deadline: nil, is_multiple: true},
+    {number: nil, name: 'Aknasuuruste tugi', max_points: 1, deadline: nil, is_multiple: true},
+    {number: nil, name: 'Heade praktikate järgimine', max_points: 3, deadline: nil, is_multiple: true}
+]
 
   class GradingAspect < ActiveRecord::Base
   end
@@ -40,7 +47,13 @@ class AddGradingAspectsData < ActiveRecord::Migration[5.0]
 
   def down
     @@data.each do |aspect|
-      GradingAspect.find_by(number: aspect[:number]).destroy
+      if aspect[:number].present?
+        obj = GradingAspect.find_by(number: aspect[:number])
+        obj.destroy if obj.present?
+      else
+        obj = GradingAspect.find_by(name: aspect[:name])
+        obj.destroy if obj.present?
+      end
     end
   end
 end

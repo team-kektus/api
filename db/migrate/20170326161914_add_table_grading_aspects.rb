@@ -2,7 +2,7 @@ class AddTableGradingAspects < ActiveRecord::Migration[5.0]
   def change
     create_table(:grading_aspects) do |t|
 
-      t.string :number, :null => false
+      t.string :number, :null => true
       t.string :name, :null => false
       t.integer :deadline, :null => true
       t.integer :max_points, :null => false, :default => 0

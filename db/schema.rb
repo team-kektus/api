@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20170412082748) do
   enable_extension "plpgsql"
 
   create_table "grading_aspects", force: :cascade do |t|
-    t.string  "number",                      null: false
+    t.string  "number"
     t.string  "name",                        null: false
     t.integer "deadline"
     t.integer "max_points",  default: 0,     null: false
