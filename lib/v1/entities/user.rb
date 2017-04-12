@@ -1,6 +1,7 @@
 module V1
   module Entities
     class User < Grape::Entity
+      expose :id
       expose :full_name
       expose :email
       expose :is_admin
