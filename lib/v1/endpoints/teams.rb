@@ -15,20 +15,25 @@ module V1
           end
 
           namespace 'points' do
-            get ':multiple' do
+            params do
+              optional :multiple, type: Boolean, desc: 'List multiple graded points or only single ones. If not present, all points all listed.'
+            end
+            get do
               query = Models::Point.all.by_team_id(params[:team_id])
               query = query.multiple(params[:multiple]) if params[:multiple].present?
               present query, with: Entities::Point
             end
 
-            before &:ensure_professor!
-            params do
-              requires :presentation_date, type: Integer, desc: "Number of stage when the team presented this aspect"
-              requires :points, type: Float, desc: "Number of points team got for this aspect"
-              requires :grading_aspect_id, type: Integer, desc: "ID of the grading aspect these points belong to"
-            end
-            post do
-              present Models::Point.create!(permit_points_params(params)), with: Entities::Point
+            namespace do
+              before &:ensure_professor!
+              params do
+                requires :presentation_date, type: Integer, desc: "Number of stage when the team presented this aspect"
+                requires :points, type: Float, desc: "Number of points team got for this aspect"
+                requires :grading_aspect_id, type: Integer, desc: "ID of the grading aspect these points belong to"
+              end
+              post do
+                present Models::Point.create!(permit_points_params(params)), with: Entities::Point
+              end
             end
           end
         end

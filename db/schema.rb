@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326161935) do
+ActiveRecord::Schema.define(version: 20170412082748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "grading_aspects", force: :cascade do |t|
-    t.string  "number",                      null: false
+    t.string  "number"
     t.string  "name",                        null: false
     t.integer "deadline"
     t.integer "max_points",  default: 0,     null: false
