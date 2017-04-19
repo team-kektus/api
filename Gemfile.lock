@@ -198,7 +198,7 @@ DEPENDENCIES
   foreman (~> 0.83.0)
   grape (~> 0.19.1)
   grape-entity (~> 0.6.1)
-  koala
+  koala (~> 3.0.0)
   paperclip (~> 5.1.0)
   pg (~> 0.19.0)
   puma (~> 3.7)
