@@ -4,7 +4,7 @@ class AddTableUsers < ActiveRecord::Migration[5.0]
 
       t.string :full_name, :null => false
       t.string :email,              :null => false
-      t.string :encrypted_password, :null => false
+      t.string :encrypted_password, :null => true
 
       t.timestamps
     end
