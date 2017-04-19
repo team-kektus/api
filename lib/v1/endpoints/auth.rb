@@ -25,6 +25,28 @@ module V1
           warden.logout(:user)
           present 'true'
         end
+
+
+
+        namespace 'social' do
+          params do
+            requires :provider, type: String
+            requires :access_token, type: String
+          end
+          post do
+            permitted_params = allowed_social_params(params)
+            user = Models::User.find_by_social_backend(permitted_params[:provider], permitted_params[:access_token])
+
+            if user.present?
+              warden.set_user(user, :scope => :user)
+              present user, with: Entities::User
+            else
+              error! 'Problem with social auth', 401
+            end
+          end
+        end
+
+
       end
 
       helpers do
@@ -35,6 +57,12 @@ module V1
           )
         end
 
+        def allowed_social_params(params)
+          ActionController::Parameters.new(params).permit(
+            :provider,
+            :access_token
+          )
+        end
       end
     end
   end

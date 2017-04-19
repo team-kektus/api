@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412082748) do
+ActiveRecord::Schema.define(version: 20170413134322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20170412082748) do
   create_table "users", force: :cascade do |t|
     t.string   "full_name",                           null: false
     t.string   "email",                               null: false
-    t.string   "encrypted_password",                  null: false
+    t.string   "encrypted_password"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.boolean  "is_admin",            default: false, null: false
@@ -63,7 +63,17 @@ ActiveRecord::Schema.define(version: 20170412082748) do
     t.index ["team_id"], name: "index_users_on_team_id", using: :btree
   end
 
+  create_table "users_social_auth", force: :cascade do |t|
+    t.integer "user_id",    null: false
+    t.string  "provider",   null: false
+    t.string  "uid",        null: false
+    t.json    "extra_data", null: false
+    t.index ["user_id", "provider"], name: "index_users_social_auth_on_user_id_and_provider", unique: true, using: :btree
+    t.index ["user_id"], name: "index_users_social_auth_on_user_id", using: :btree
+  end
+
   add_foreign_key "points", "grading_aspects"
   add_foreign_key "points", "teams"
   add_foreign_key "users", "teams"
+  add_foreign_key "users_social_auth", "users"
 end

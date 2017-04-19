@@ -4,6 +4,7 @@ module Models
     include Paperclip::Glue
 
     belongs_to :team
+    has_many :social_auths, class_name: "UserSocialAuth"
 
     validates :email, :presence => true
 
@@ -28,6 +29,26 @@ module Models
     def valid_password?(password)
       V1::Auth::Encryptor.compare(encrypted_password, password)
     end
+
+    def self.find_by_social_backend(provider, access_token)
+      api = UserSocialAuth.get_api(provider, access_token)
+      data = ActionController::Parameters.new(api.get_object('me', fields: [:email, :name])).merge(access_token: access_token, provider: provider).permit(
+        :email, :name, :id, :access_token, :provider
+      )
+      auth = UserSocialAuth.find_by(provider: data[:provider], uid: data[:id])
+
+      if auth.present?
+        auth.user
+      else
+        user = User.new(full_name: data[:name], email: data[:email])
+        auth = UserSocialAuth.new(provider: data[:provider], uid: data[:id], extra_data: data.permit(:id, :access_token))
+        user.social_auths.append(auth)
+        auth.save!
+        user.save!
+        user
+      end
+    end
+
 
   protected
 

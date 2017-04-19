@@ -16,7 +16,6 @@ ActiveRecord::Base.logger = Logger.new STDOUT if ENV["RACK_ENV"] == "development
 
 use Rack::Session::Cookie, secret: Config.secret_key
 
-
 use Warden::Manager do |manager|
   manager.failure_app = V1::Auth::FailureApp.new
   manager.default_strategies :password
