@@ -4,7 +4,9 @@ module V1
     format :json
     content_type :json, 'application/json;charset=UTF-8'
 
-    rescue_from :all, backtrace: true
+    if ENV['RACK_ENV'] == 'development'
+      rescue_from :all, backtrace: true
+    end
 
     helpers V1::Helpers
 
