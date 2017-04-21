@@ -31,15 +31,33 @@ module V1
               present Models::User.find(params[:user_id]), with: Entities::User
             end
 
-            before &:ensure_professor!
-            params do
-              optional :team_id, type: String
+            namespace do
+              before &:ensure_professor!
+
+              params do
+                optional :team_id, type: String
+              end
+              put do
+                user = Models::User.find(params[:user_id])
+                user.update_attributes(permit_professor_params(params))
+                user.save
+                present user, with: Entities::User
+              end
             end
-            put do
-              user = Models::User.find(params[:user_id])
-              user.update_attributes(permit_professor_params(params))
-              user.save
-              present user, with: Entities::User
+
+            namespace 'permissions' do
+              before &:ensure_admin!
+
+              params do
+                optional :is_professor, type: Boolean
+                optional :is_admin, type: Boolean
+              end
+              put do
+                user = Models::User.find(params[:user_id])
+                user.update_attributes(permit_admin_params(params))
+                user.save
+                present user, with: Entities::User
+              end
             end
           end
         end
@@ -61,6 +79,13 @@ module V1
         def permit_professor_params(params)
           ActionController::Parameters.new(params).permit(
             :team_id
+          )
+        end
+
+        def permit_admin_params(params)
+          ActionController::Parameters.new(params).permit(
+            :is_professor,
+            :is_admin
           )
         end
       end
