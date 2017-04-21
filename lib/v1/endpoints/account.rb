@@ -10,17 +10,31 @@ module V1
 
         desc 'Change user data.'
         put do
-          permitted_params = allowed_params(params)
-          permitted_params[:avatar] = ActionDispatch::Http::UploadedFile.new(params[:avatar]) if params[:avatar]
-          user = Models::User.find_by(email: current_user.email)
-          user.update_attributes(permitted_params)
-          user.save!
+          permitted_params = allowed_user_params(params)
+          permitted_params[:avatar] = convert_avatar(params[:avatar]) if params[:avatar]
+          current_user.update_attributes(permitted_params)
+          current_user.save!
+        end
+
+
+        namespace :team do
+          get do
+            present current_user.team, with: Entities::Team
+          end
+
+          desc 'Change team data.'
+          put do
+            permitted_params = allowed_team_params(params)
+            permitted_params[:avatar] = convert_avatar(params[:avatar]) if params[:avatar]
+            current_user.team.update_attributes(permitted_params)
+            current_user.team.save!
+          end
         end
 
       end
 
       helpers do
-        def allowed_params(params)
+        def allowed_user_params(params)
           ActionController::Parameters.new(params).permit(
             :password,
             :full_name,
@@ -29,6 +43,19 @@ module V1
             :county,
             :avatar => [:filename, :tempfile]
           )
+        end
+
+        def allowed_team_params(params)
+          ActionController::Parameters.new(params).permit(
+            :repository_url,
+            :staging_url,
+            :description,
+            :avatar => [:filename, :tempfile]
+          )
+        end
+
+        def convert_avatar(avatar)
+          ActionDispatch::Http::UploadedFile.new(avatar)
         end
       end
 
